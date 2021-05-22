@@ -14,7 +14,7 @@ app.use(cors());
    
 mongoose
   .connect(
-    `mongodb+srv://${process.env.DB_USER_NAME}:${process.env.DB_PASSWORD}@cluster0.cl0vb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://ami:BeHuman%23123@cluster0.cl0vb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
