@@ -35,9 +35,9 @@ app.get('/',(req,res)=>{
   res.send("runing");
 })
 app.use(express.json())
-app.use(require('./routes/auth'))
-app.use(require('./routes/post'))
-app.use('/user',require('./routes/user'))
+// app.use(require('./routes/auth'))
+// app.use(require('./routes/post'))
+// app.use('/user',require('./routes/user'))
 
 // listening on the port
 app.listen(PORT, function() {
