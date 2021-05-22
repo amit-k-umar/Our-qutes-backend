@@ -1,7 +1,11 @@
 const express= require("express")
 const mongoose=require('mongoose')
 //const env=require('dotenv')
+
 const app=express();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 var cors = require('cors');
 app.use(cors());
 // env.config();
@@ -27,7 +31,9 @@ mongoose
 
 const PORT = process.env.PORT || 3000;
 
-
+app.get('/',(req,res)=>{
+  res.send("runing");
+})
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
