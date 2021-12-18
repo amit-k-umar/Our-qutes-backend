@@ -1,14 +1,12 @@
-require('dotenv').config();
-
 const router = require('express').Router();
 var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 const { Users } = require('../models/users');
 
-router.post('/', async (req, res) => {
+router.post('/new-password', async (req, res) => {
     try {
         let { id, token, password, confirm_password } = req.body;
-        if (!id || !token || !password || !confirm_password) {
+        if (!id || !token || !password) {
             return res.status(200).json({
                 message: "Missing field",
                 status: 0
@@ -18,20 +16,12 @@ router.post('/', async (req, res) => {
         // check if this id exist or not
         if (user) {
             // id verified
-            const secret = process.env.SECRET + user.password;
+            const secret = process.env.FP_SECRET + user.password;
             try {
 
                 //token verified
                 const payload = jwt.verify(token, secret);
-
-                // password and confirm_password should be equal
-                if (password !== confirm_password) {
-                    return res.status(200).json({
-                        message: "Passwords do not match",
-                        status: 0
-                    })
-                }
-                else {
+                {
                     const salt = await bcrypt.genSalt(10);
                     const hashedPassword = await bcrypt.hash(password, salt);
                     // payload contains id and email of the user

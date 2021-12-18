@@ -3,8 +3,20 @@ const {Post}=require('../models/posts')
 const requireAuth        = require('../middleware/auth'); 
 const express     = require('express');
 const bcrypt      = require('bcrypt');
+const { request } = require('express');
 const router      = express.Router();
 
+router.get('/pic/:id',requireAuth,(req,res)=>{
+    Users.findOne({_id:req.params.id}).then(
+        (result)=>{
+            res.send(result.pic);
+        }
+    ).catch(e=>{
+        console.log(e);
+        res.status(402).send('error');
+    })
+
+})
 router.put('/updatepic',requireAuth,(req,res)=>{
     Users.findByIdAndUpdate(req.user._id,{$set:{pic:req.body.pic}},{new:true},
         (err,result)=>{
@@ -47,7 +59,10 @@ router.get('/:id',requireAuth,(req,res)=>{
     
 })
 
-router.put('/follow',requireAuth,(req,res)=>{
+router.put('/follow',requireAuth,async (req,res)=>{
+    const user=await Users.findOne({_id:req.body.followId});
+    if(user.private)
+    return res.status(422).json({error:"Some thing went wrong"});
     Users.findByIdAndUpdate(req.body.followId,{
         $push:{followers:req.user._id}
     },{
@@ -56,6 +71,7 @@ router.put('/follow',requireAuth,(req,res)=>{
         if(err){
             return res.status(422).json({error:err})
         }
+        
       Users.findByIdAndUpdate(req.user._id,{
           $push:{following:req.body.followId}
           

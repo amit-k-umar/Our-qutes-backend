@@ -1,20 +1,20 @@
-const express= require("express")
+const express = require('express')
 const mongoose=require('mongoose')
-//const env=require('dotenv')
-
-const app=express();
+const app= express();
+const cors= require('cors');
+//require("dotenv/config")
 if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-var cors = require('cors');
-app.use(cors());
-// env.config();
+    require('dotenv').config();
+  }
+const PORT = process.env.PORT || 5000;
+app.use(cors())
+app.use(express.json());
 
-
-   
+// db connection
+var t=false;
 mongoose
   .connect(
-    `mongodb+srv://ami:BeHuman%23123@cluster0.cl0vb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.cl0vb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -24,22 +24,26 @@ mongoose
   )
   .then(() => {
     console.log("Database connected");
+    t=true;
   })
   .catch((err) => {
     console.log("NOT CONNECTED", err);
   });
+// routes
 
-const PORT = process.env.PORT || 3000;
 
-app.get('/',(req,res)=>{
-  res.send("runing");
+app.get("/",async (req,res)=>{
+  res.send(t);
 })
-app.use(express.json())
-// app.use(require('./routes/auth'))
-// app.use(require('./routes/post'))
-// app.use('/user',require('./routes/user'))
 
-// listening on the port
-app.listen(PORT, function() {
-  console.log('listening on *:3000');
-});
+app.use(express.json())
+app.use(require('./routes/auth'))
+app.use(require('./routes/post'))
+app.use('/user',require('./routes/user'))
+app.use(require('./routes/forgot-password'))
+app.use(require('./routes/reset-password'))
+app.use(require('./routes/private'))
+
+app.listen(PORT, async ()=>{
+  console.log("started server")
+})

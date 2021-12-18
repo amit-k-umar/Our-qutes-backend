@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    likes:[{type:ObjectId,ref:Users}],
+    likes:[{type:ObjectId ,ref:Users,}],
     comments:[{
         text:String,
         postedBy:{type:ObjectId,ref:Users}
@@ -24,6 +24,7 @@ const postSchema = new mongoose.Schema({
        ref:Users
     }
 },{timestamps:true})
+
 
 // mongoose.model("Post",postSchema)
 module.exports.Post =mongoose.model("Post",postSchema) ;

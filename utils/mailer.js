@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const nodemailer = require('nodemailer');
 const {google} = require('googleapis');
 
@@ -28,7 +28,7 @@ const mail = async function sendMail(name, email, subject, link) {
         })
 
         const mailOptions = {
-            from: `"Euphoria" <${process.env.USER}>`,
+            from: `"OUR Quotes"`,
             to: email,
             subject: subject,
             html: `Hello ${name},<br/>You have requested for a password change. Please 

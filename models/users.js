@@ -24,10 +24,16 @@ const userSchema = new mongoose.Schema({
     expireToken:Date,
     pic:{
      type:String,
-     default:"https://res.cloudinary.com/cnq/image/upload/v1586197723/noimage_d4ipmd.png"
+     default:"http://res.cloudinary.com/dxwxcamgk/image/upload/v1621721229/g5ijjp66f9iwc0xp16vj.png"
     },
-    followers:[{type:ObjectId,ref:"User"}],
-    following:[{type:ObjectId,ref:"User"}]
+    private:{
+     type: Boolean,
+     default:false
+    },
+    followRequest:[{type:ObjectId,ref:"users"}],
+    followRequested:[{type:ObjectId,ref:"users"}],
+    followers:[{type:ObjectId,ref:"users"}],
+    following:[{type:ObjectId,ref:"users"}]
 })
 
 userSchema.methods.generateAuthToken = function() {
